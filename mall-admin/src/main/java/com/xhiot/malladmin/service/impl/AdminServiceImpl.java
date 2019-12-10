@@ -1,0 +1,65 @@
+package com.xhiot.malladmin.service.impl;
+
+import com.xhiot.mall.mallmbg.mapper.UserMapper;
+import com.xhiot.mall.mallmbg.model.User;
+import com.xhiot.mall.mallmbg.model.UserExample;
+import com.xhiot.malladmin.service.AdminService;
+import com.xhiot.malladmin.util.JwtTokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * AdminService的实现类
+ * @ClassName AdminServiceImpl
+ **/
+@Service("adminService")
+public class AdminServiceImpl implements AdminService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public User getAdminByUsername(String username) {
+        UserExample example = new UserExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        List<User> adminList = userMapper.selectByExample(example);
+        if (adminList != null && adminList.size() > 0) {
+            return adminList.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public String login(String username, String password) {
+        String token = null;
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+                throw new BadCredentialsException("密码错误");
+            }
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            token = jwtTokenUtil.generateToken(userDetails);
+        }catch (Exception e){
+            LOGGER.warn("登录异常:{}",e.getMessage());
+        }
+        return token;
+    }
+}

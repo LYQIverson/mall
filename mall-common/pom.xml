@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+   <!-- <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
+    </parent>-->
+    <groupId>com.xhiot.mall</groupId>
+    <artifactId>mall-common</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>mall-common</name>
+    <description>Demo project for Spring Boot</description>
+    <packaging>jar</packaging>
+
+    <!--继承主项目mall-->
+    <parent>
+        <groupId>com.xhiot.mall</groupId>
+        <artifactId>mall</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+
+    <dependencies>
+        <!--swagger2-UI API文档生成工具依赖-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <!--Hutool Java工具包-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
