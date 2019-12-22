@@ -3,6 +3,8 @@ package com.xhiot.malladmin.service.impl;
 import com.xhiot.mall.mallmbg.mapper.UserMapper;
 import com.xhiot.mall.mallmbg.model.User;
 import com.xhiot.mall.mallmbg.model.UserExample;
+import com.xhiot.mall.mallmbg.model.UserPermission;
+import com.xhiot.malladmin.dao.UserToRoleDao;
 import com.xhiot.malladmin.service.AdminService;
 import com.xhiot.malladmin.util.JwtTokenUtil;
 import org.slf4j.Logger;
@@ -28,6 +30,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private UserToRoleDao userToRoleDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -61,5 +65,10 @@ public class AdminServiceImpl implements AdminService {
             LOGGER.warn("登录异常:{}",e.getMessage());
         }
         return token;
+    }
+
+    @Override
+    public List<UserPermission> getPermissionList(String userId) {
+        return userToRoleDao.getPermissionList(userId);
     }
 }

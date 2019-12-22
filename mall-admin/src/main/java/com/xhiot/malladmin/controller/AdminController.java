@@ -1,5 +1,6 @@
 package com.xhiot.malladmin.controller;
 
+import com.xhiot.mall.mallmbg.model.User;
 import com.xhiot.malladmin.dto.AdminLoginParam;
 import com.xhiot.malladmin.service.AdminService;
 import com.xhiot.mallcommon.api.CommonResult;
@@ -8,13 +9,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,13 +30,13 @@ public class AdminController {
     private AdminService adminService;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
-    @Value("${jwt.tokenHead")
+    @Value("${jwt.tokenHead}")
     private String tokenHead;
 
     @ApiOperation(value = "登陆以后返回token")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult login( AdminLoginParam adminLoginParam, BindingResult result){
+    public CommonResult login(AdminLoginParam adminLoginParam, BindingResult result){
         System.out.println("请求登陆接口::");
         System.out.println("adminLoginParam.getUsername()==="+adminLoginParam.getUsername()+".adminLoginParam.getPassord()="+adminLoginParam.getPassword());
         String encodePassword = passwordEncoder.encode(adminLoginParam.getPassword());
@@ -53,4 +51,17 @@ public class AdminController {
         return CommonResult.success(tokenMap);
     }
 
+
+    @ApiOperation(value = "获取当前登录用户信息")
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult getAdminInfo(Principal principal) {
+        String username = principal.getName();
+        User umsAdmin = adminService.getAdminByUsername(username);
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", umsAdmin.getUsername());
+        data.put("roles", new String[]{"TEST"});
+        data.put("nickname", umsAdmin.getNickname());
+        return CommonResult.success(data);
+    }
 }

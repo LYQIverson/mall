@@ -1,4 +1,4 @@
-package com.xhiot.malladmin;
+package com.xhiot.malladmin.component;
 
 import cn.hutool.json.JSONUtil;
 import com.xhiot.mallcommon.api.CommonResult;
@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @ClassName RestAuthenticationEntryPoint
- **/
+ * 当未登录或者token失效访问接口时，自定义的返回结果
+ */
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSONUtil.parse(CommonResult.unauthorized(e.getMessage())));
+        response.getWriter().println(JSONUtil.parse(CommonResult.unauthorized(authException.getMessage())));
         response.getWriter().flush();
     }
 }

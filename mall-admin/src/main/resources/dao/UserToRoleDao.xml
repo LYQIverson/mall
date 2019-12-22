@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhiot.malladmin.dao.UserToRoleDao">
+
+    <select id="getPermissionList" resultMap="com.xhiot.mall.mallmbg.mapper.UserPermissionMapper.BaseResultMap">
+        SELECT
+        p.*
+        FROM
+       t_userpermission p
+        WHERE
+        p.pid = #{adminId}
+        AND p.id IS NOT NULL
+    </select>
+</mapper>

@@ -1,8 +1,10 @@
 package com.xhiot.malladmin.config;
 
 import com.xhiot.mall.mallmbg.model.User;
-import com.xhiot.malladmin.RestAuthenticationEntryPoint;
+import com.xhiot.mall.mallmbg.model.UserPermission;
+import com.xhiot.malladmin.bo.UserDetalis;
 import com.xhiot.malladmin.component.JwtAuthenticationTokenFilter;
+import com.xhiot.malladmin.component.RestAuthenticationEntryPoint;
 import com.xhiot.malladmin.component.RestfulAccessDeniedHandler;
 import com.xhiot.malladmin.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 /**
  * @ClassName SecurityConfig
@@ -90,10 +94,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //获取登录用户信息
         return username -> {
             User user = adminService.getAdminByUsername(username);
+            System.out.println("====> user.getId()="+user.getId());
             if (user != null) {
-                System.out.println("用户不为空");
+                List<UserPermission> permissionList = adminService.getPermissionList(user.getId());
+                return new UserDetalis(user,permissionList);
             }
-            throw new UsernameNotFoundException("用户名或密码错误");
+                throw new UsernameNotFoundException("用户名或密码错误");
         };
     }
 
