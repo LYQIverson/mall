@@ -79,7 +79,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from t_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,15 +90,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from t_user
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user
+    delete from t_user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.xhiot.mall.mallmbg.model.UserExample">
-    delete from user
+    delete from t_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -107,7 +107,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user (username, password, nickname, 
+    insert into t_user (username, password, nickname,
       email, createtime, logintime, 
       status, note)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
@@ -118,7 +118,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user
+    insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="username != null">
         username,
@@ -173,13 +173,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.xhiot.mall.mallmbg.model.UserExample" resultType="java.lang.Long">
-    select count(*) from user
+    select count(*) from t_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update user
+    update t_user
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
@@ -214,7 +214,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update user
+    update t_user
     set id = #{record.id,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
@@ -229,7 +229,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.xhiot.mall.mallmbg.model.User">
-    update user
+    update t_user
     <set>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
@@ -259,7 +259,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xhiot.mall.mallmbg.model.User">
-    update user
+    update t_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},

@@ -3,12 +3,8 @@ package com.xhiot.mall.mallmbg.mapper;
 import com.xhiot.mall.mallmbg.model.User;
 import com.xhiot.mall.mallmbg.model.UserExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 
-@Mapper
 public interface UserMapper {
     long countByExample(UserExample example);
 
